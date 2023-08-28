@@ -158,8 +158,8 @@ defmodule LvAppWeb.CoreComponents do
 
     <.flash
       id="server-error"
-      kind={:error}
-      title="Something went wrong!"
+      kind={:info}
+      title="Updating list, please wait"
       phx-disconnected={show(".phx-server-error #server-error")}
       phx-connected={hide("#server-error")}
       hidden

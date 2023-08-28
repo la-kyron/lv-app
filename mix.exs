@@ -19,7 +19,7 @@ defmodule LvApp.MixProject do
   def application do
     [
       mod: {LvApp.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :public_key]
     ]
   end
 
@@ -49,7 +49,10 @@ defmodule LvApp.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:tesla, "~> 1.4"},
+      {:hackney, "~> 1.14.0"},
+      {:ssl_verify_fun, "~> 1.1.7", manager: :rebar3, override: true}
     ]
   end
 

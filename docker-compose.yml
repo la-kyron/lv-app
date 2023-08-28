@@ -1,0 +1,41 @@
+version: "3"
+networks:
+  fe_phx:
+    driver: bridge
+  todo_api_be_phx:
+    external:
+      true
+services:
+  phoenix:
+    build: .
+    networks:
+    - fe_phx
+    - todo_api_be_phx
+    volumes:
+      - .:/app
+    ports:
+      - "4001:4001"
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: lv_app_dev
+      PGHOST: db2
+      PGPORT: 5432
+    depends_on:
+      - db2
+    command:
+      - "./entrypoint.sh"
+  db2:
+    image: postgres:13.4-alpine
+    networks:
+    - fe_phx
+    environment:
+      POSTGRES_DB: lv_app_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
