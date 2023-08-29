@@ -12,7 +12,7 @@
   rows={@streams.todos}
   row_click={fn {_id, todo} -> JS.navigate(~p"/todos/#{todo}") end}
 >
-  <:col :let={{_id, todo}} label="ID"><%= todo.id %></:col>
+  <%!-- <:col :let={{_id, todo}} label="ID"><%= todo.id %></:col> --%>
   <:col :let={{_id, todo}} label="Title"><%= todo.title %></:col>
   <:col :let={{_id, todo}} label="Description"><%= todo.description %></:col>
   <:action :let={{_id, todo}}>

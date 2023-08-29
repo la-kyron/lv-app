@@ -1,8 +1,10 @@
 defmodule LvAppWeb.TodoLive.FormComponent do
+  import Ecto.Changeset
   use LvAppWeb, :live_component
   use Tesla
 
   alias LvApp.Todos
+  alias LvApp.Todos.Todo
 
   @impl true
   def render(assigns) do
@@ -71,12 +73,18 @@ defmodule LvAppWeb.TodoLive.FormComponent do
       Tesla.Middleware.Logger
     ])
     path = "/api/todos/" <> socket.assigns.todo.id
-    todo = Tesla.put(client, path, todo_map)
-    notify_parent({:udpated, todo})
+
+    with {:ok, result} <- Tesla.put(client, path, todo_map),
+         todo_changesets <- result.body["data"],
+         todo <- Todo.changeset(%Todo{}, todo_changesets),
+         response = apply_changes(todo)
+    do
+      notify_parent({:saved, response})
     {:noreply,
           socket
           |> put_flash(:info, "Todo updated successfully")
           |> push_patch(to: socket.assigns.patch)}
+    end
   end
 
   defp save_todo(socket, :new, todo_params) do
@@ -95,6 +103,7 @@ defmodule LvAppWeb.TodoLive.FormComponent do
     ])
     path = "/api/todos/"
     todo = Tesla.post(client, path, todo_map)
+
     case todo do
       {:ok, todo} ->
         notify_parent({:saved, todo})

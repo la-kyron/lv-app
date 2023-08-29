@@ -17,7 +17,6 @@ defmodule LvAppWeb.TodoLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-
     with {:ok, result} <- get("/api/todos")
     do
       todos =
@@ -45,7 +44,7 @@ defmodule LvAppWeb.TodoLive.Index do
   end
 
   defp apply_action(socket, :update, %{"id" => id}) do
-    IO.inspect(socket)
+    # IO.inspect(socket)
   end
 
   defp apply_action(socket, :new, _params) do
